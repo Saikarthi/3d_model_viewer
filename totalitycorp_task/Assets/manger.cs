@@ -18,7 +18,11 @@ public class manger : MonoBehaviour
 
 
     private Vector3 previouspos;
-   
+
+
+    //zoom
+    public float zoomOutMin = 1;
+    public float zoomOutMax = 8;
 
     void Start()
     {
@@ -41,7 +45,7 @@ public class manger : MonoBehaviour
 
     void Update()
     {
-        
+
         // TOUCH RECOGNITION
         fingerCount = 0;
 
@@ -89,20 +93,43 @@ public class manger : MonoBehaviour
                 Vector3 dir = previouspos - cam.ScreenToViewportPoint(Input.GetTouch(0).position);
 
                 Vector3 a = new Vector3(target.transform.position.x, 1.05f, target.transform.position.z);
-                
-                cam.transform.position =a ;
 
-                cam.transform.Rotate(new Vector3(1 , 0, 0) , dir.y * speed * Time.deltaTime);
-                cam.transform.Rotate(new Vector3(0, 1, 0)  , dir.x *speed * Time.deltaTime, Space.World);
+                cam.transform.position = a;
+
+                cam.transform.Rotate(new Vector3(1, 0, 0), dir.y * speed * Time.deltaTime);
+                cam.transform.Rotate(new Vector3(0, -1, 0), dir.x * speed * Time.deltaTime, Space.World);
                 cam.transform.Translate(new Vector3(0, 0, -10f));
 
             }
+
+
         }
-
-
-        if (fingerCount == 2)
+        if (Input.touchCount == 2)
         {
-            //PAN/Zoom
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            float prevMagnitude = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
+
+            float difference = currentMagnitude - prevMagnitude;
+
+            zoom(difference * 0.01f);
         }
+
     }
+
+    void zoom(float increment)
+    {
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - increment, zoomOutMin, zoomOutMax);
+    }
+
+
 }
+
+
+
+

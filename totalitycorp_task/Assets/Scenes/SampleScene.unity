@@ -372,8 +372,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 26.991467
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 2.85
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -748,7 +748,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 534669904}
   target: {fileID: 2679514249201421822}
-  speed: 300
+  speed: 100
+  zoomOutMin: 1
+  zoomOutMax: 5
 --- !u!4 &2031289617
 Transform:
   m_ObjectHideFlags: 0
